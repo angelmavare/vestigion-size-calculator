@@ -46,14 +46,14 @@
                     <form action="">
                         <h4 class="alert-heading">Size info</h4>
                         <div class="mb-3 row">
-                            <label for="height" class="col-sm-3 col-form-label">Height (Kg)</label>
+                            <label for="height" class="col-sm-3 col-form-label">Height (Cm)</label>
                             <div class="col-sm-5">
                                 <input type="number" class="form-control" id="height" v-model="height"
                                     v-on:keyup="calculateHeight">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="weight" class="col-sm-3 col-form-label">Weigth (Cm)</label>
+                            <label for="weight" class="col-sm-3 col-form-label">Weigth (Kg)</label>
                             <div class="col-sm-5">
                                 <input type="number" class="form-control" id="weight" v-model="weight"
                                     v-on:keyup="calculateWeight">
@@ -73,10 +73,10 @@
                         <h4 class="alert-heading">Results</h4>
                         <hr>
                         <ul class="sizeList">
-                            <li v-html="heightResult" id="calculateHeight"></li>
-                            <!-- <strong>Height: </strong> <span id="heightResult"></span>  -->
-                            <li v-html="weightResult" id="calculateWeight"></li>
-                            <!--  <strong>Weight: </strong> <span id="weightResult"></span> -->
+                            <li v-html="heightPrint" id="calculateHeight"></li>
+                            <!-- <strong>Height: </strong> <span id="heightPrint"></span>  -->
+                            <li v-html="weightPrint" id="calculateWeight"></li>
+                            <!--  <strong>Weight: </strong> <span id="weightPrint"></span> -->
                         </ul>
                     </div>
                 </div>
@@ -119,6 +119,8 @@
                     message: 'Hello Vue!',
                     height: '',
                     weight: '',
+                    heightPrint: '',
+                    weightPrint: '',
                     heightResult: '',
                     weightResult: ''
                 }
@@ -126,16 +128,19 @@
             methods: {
                 calculateHeight() {
                     if (this.height > 0) {
-                        this.heightResult = `<strong>Height: </strong> <span id="heightResult">${this.height}</span>`;
+                        this.heightResult = this.height * 0.12;
+                        console.log(this.heightResult);
+                        this.heightPrint = `<strong>Height: </strong> <span id="heightPrint">${this.heightResult} cm</span>`;
                     } else {
-                        this.heightResult = ``;
+                        this.heightPrint = ``;
                     }
                 },
                 calculateWeight() {
                     if (this.weight > 0) {
-                        this.weightResult = `<strong>Weight: </strong> <span id="weightResult">${this.weight}</span>`;
+                        this.weightResult = (this.weight*(this.heightResult/this.height)**3)*1000;
+                        this.weightPrint = `<strong>Weight: </strong> <span id="weightPrint">${this.weightResult.toFixed(2) } g</span>`;
                     } else {
-                        this.weightResult = ``;
+                        this.weightPrint = ``;
                     }
                 }
             },
@@ -153,8 +158,8 @@
              var sizeList = document.getElementById('sizeList');
              console.log(height);
              if (height != 0) {
-                 let heightResult = height * 0.12;
-                 let htmlHeight = `<li id="calculateHeight"><strong>Height: </strong> <span id="heightResult">${heightResult}</span> </li>`;
+                 let heightPrint = height * 0.12;
+                 let htmlHeight = `<li id="calculateHeight"><strong>Height: </strong> <span id="heightPrint">${heightPrint}</span> </li>`;
                  sizeList.insertAdjacentHTML('beforeend', htmlHeight);
              }
          } */
